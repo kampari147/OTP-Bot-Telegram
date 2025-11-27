@@ -47,6 +47,35 @@ def main():
             return
         bot.reply_to(message, parts[1])
 
+    @bot.message_handler(commands=["time"])
+    def time_cmd(message):
+        from datetime import datetime
+        current_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        bot.reply_to(message, f"Current server time: {current_time}")
+
+    @bot.message_handler(commands=["status"])
+    def status_cmd(message):
+        bot.reply_to(message, "🟢 Bot is online and healthy!")
+
+    @bot.message_handler(commands=["info"])
+    def info_cmd(message):
+        info_text = (
+            "📋 Safe Demo Bot Info:\n"
+            "Version: 1.0\n"
+            "Status: Active\n"
+            "Purpose: Safe testing of Telegram bot functionality\n"
+            "No external APIs or malicious code."
+        )
+        bot.reply_to(message, info_text)
+
+    @bot.message_handler(func=lambda message: True)
+    def default_handler(message):
+        # Catch-all for any text message not matched by other handlers
+        bot.reply_to(
+            message,
+            "Unknown command. Send /help to see available commands."
+        )
+
     print("Safe bot started. Listening for messages (press Ctrl+C to stop).")
     bot.infinity_polling()
 
