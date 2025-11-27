@@ -112,13 +112,11 @@ This project expects the Telegram bot token to be provided via the environment v
 
 Recommended ways to run locally with a new token:
 
-- Temporary for current shell session (quick):
    ```bash
    export BOT_TOKEN="YOUR_NEW_TOKEN"
    python3 bot.py
    ```
 
-- Using a `.env` file (development convenience) — `.env` is ignored by git in this repo:
    1. Install python-dotenv (optional):
        ```bash
        pip install python-dotenv
@@ -132,12 +130,25 @@ Recommended ways to run locally with a new token:
        python3 bot.py
        ```
 
-- Using the included `run.sh` helper (prompts securely if `BOT_TOKEN` not set):
    ```bash
    chmod +x run.sh
    ./run.sh
    ```
 
+Safe demo bot
+----------------
+I added `safe_bot.py` — a minimal, non-malicious Telegram bot for testing. To run it:
+
+1. Add your token to the environment (do not paste it into chat):
+
+```bash
+export BOT_TOKEN="YOUR_NEW_TOKEN"
+python3 safe_bot.py
+```
+
+2. Test in Telegram by sending `/start` or `/help` to your bot.
+
+I will only run this `safe_bot.py` in this environment after you confirm you've set `BOT_TOKEN` in the terminal (I will not accept the token in chat).
 Notes:
 - The repository configuration `conf/settings.txt` should not contain the Telegram token. The token must be rotated via BotFather if it was exposed.
 - If you previously committed a token, revoke it immediately via BotFather and generate a new one (steps below).
