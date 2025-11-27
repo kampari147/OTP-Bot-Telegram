@@ -34,6 +34,19 @@ def main():
         )
         bot.reply_to(message, help_text)
 
+    @bot.message_handler(commands=["ping"])
+    def ping(message):
+        bot.reply_to(message, "pong")
+
+    @bot.message_handler(commands=["echo"])
+    def echo(message):
+        # /echo some text -> replies with 'some text'
+        parts = message.text.split(' ', 1)
+        if len(parts) == 1 or not parts[1].strip():
+            bot.reply_to(message, "Usage: /echo your message")
+            return
+        bot.reply_to(message, parts[1])
+
     print("Safe bot started. Listening for messages (press Ctrl+C to stop).")
     bot.infinity_polling()
 
