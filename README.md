@@ -40,16 +40,17 @@ OTP-Boss Bot is a Telegram bot integrated with Twilio Voice API and ElevenLabs T
    - Required Python packages listed in `requirements.txt`.
 
 3. **Configuration**:
-   - Configuration file `conf/settings.txt` should include the following keys:
-     ```json
-     {
-       "bot_token": "<YOUR_BOT_TOKEN>",
-       "account_sid": "<YOUR_TWILIO_ACCOUNT_SID>",
-       "auth_token": "<YOUR_TWILIO_AUTH_TOKEN>",
-       "ngrok_url": "<YOUR_NGROK_URL>",
-       "Twilio Phone Number": "<YOUR_TWILIO_PHONE_NUMBER>"
-     }
-     ```
+    - For security, this repository no longer stores the Telegram bot token in `conf/settings.txt`.
+    - `conf/settings.txt` should contain non-secret configuration such as Twilio and ngrok values:
+       ```json
+       {
+          "account_sid": "<YOUR_TWILIO_ACCOUNT_SID>",
+          "auth_token": "<YOUR_TWILIO_AUTH_TOKEN>",
+          "Twilio Phone Number": "<YOUR_TWILIO_PHONE_NUMBER>",
+          "ngrok_url": "<YOUR_NGROK_URL>"
+       }
+       ```
+    - Set the Telegram token using an environment variable named `BOT_TOKEN` (instructions below).
 
 ---
 
@@ -106,16 +107,40 @@ otp-boss-bot/
 
 ---
 
-## Environment Variables
-For secure handling of credentials, you can use environment variables. Update your `settings.txt` to read these variables:
-```python
-import os
-bot_token = os.getenv("BOT_TOKEN")
-account_sid = os.getenv("TWILIO_SID")
-auth_token = os.getenv("TWILIO_AUTH_TOKEN")
-ngrok = os.getenv("NGROK_URL")
-phone_numz = os.getenv("TWILIO_PHONE_NUMBER")
-```
+## Environment Variables and Running Locally (secure)
+This project expects the Telegram bot token to be provided via the environment variable `BOT_TOKEN`. Twilio and ngrok values may be provided in `conf/settings.txt` or via environment variables as needed.
+
+Recommended ways to run locally with a new token:
+
+- Temporary for current shell session (quick):
+   ```bash
+   export BOT_TOKEN="YOUR_NEW_TOKEN"
+   python3 bot.py
+   ```
+
+- Using a `.env` file (development convenience) — `.env` is ignored by git in this repo:
+   1. Install python-dotenv (optional):
+       ```bash
+       pip install python-dotenv
+       ```
+   2. Create a `.env` file at the repository root with this content (do not commit `.env`):
+       ```env
+       BOT_TOKEN=YOUR_NEW_TOKEN
+       ```
+   3. Run:
+       ```bash
+       python3 bot.py
+       ```
+
+- Using the included `run.sh` helper (prompts securely if `BOT_TOKEN` not set):
+   ```bash
+   chmod +x run.sh
+   ./run.sh
+   ```
+
+Notes:
+- The repository configuration `conf/settings.txt` should not contain the Telegram token. The token must be rotated via BotFather if it was exposed.
+- If you previously committed a token, revoke it immediately via BotFather and generate a new one (steps below).
 
 ---
 
